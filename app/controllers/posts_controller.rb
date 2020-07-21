@@ -5,12 +5,17 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @errors = flash[:errors]
   end
 
   def update
-    @post.update(post_params)
-
-    redirect_to post_path(@post)
+    # binding.pry
+    if @post.update(post_params)
+      redirect_to post_path(@post)
+    else  
+      flash[:errors] = @post.errors.full_messages
+      render :edit
+    end
   end
 
   private
